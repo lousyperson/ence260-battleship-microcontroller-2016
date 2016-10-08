@@ -5,56 +5,55 @@
 
 # Definitions.
 CC = avr-gcc
-CFLAGS = -mmcu=atmega32u2 -Os -Wall -Wstrict-prototypes -Wextra -g -Iapis/drivers -Iapis/drivers/avr -Iapis/fonts -Iapis/utils
+CFLAGS = -mmcu=atmega32u2 -Os -Wall -Wstrict-prototypes -Wextra -g -I. -I../../utils -I../../fonts -I../../drivers -I../../drivers/avr
 OBJCOPY = avr-objcopy
 SIZE = avr-size
 DEL = rm
-
 
 # Default target.
 all: game.out
 
 # Compile: create object files from C source files.
-game.o: game.c apis/drivers/avr/ir_uart.h apis/drivers/avr/system.h apis/drivers/display.h apis/drivers/navswitch.h apis/fonts/font5x7_1.h apis/utils/font.h apis/utils/tinygl.h
+game.o: game.c ../../drivers/avr/ir_uart.h ../../drivers/avr/system.h ../../drivers/display.h ../../drivers/navswitch.h ../../fonts/font5x7_1.h ../../utils/font.h ../../utils/tinygl.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-ir_uart.o: apis/drivers/avr/ir_uart.c apis/drivers/avr/ir_uart.h apis/drivers/avr/pio.h apis/drivers/avr/system.h apis/drivers/avr/timer0.h apis/drivers/avr/usart1.h
+ir_uart.o: ../../drivers/avr/ir_uart.c ../../drivers/avr/ir_uart.h ../../drivers/avr/pio.h ../../drivers/avr/system.h ../../drivers/avr/timer0.h ../../drivers/avr/usart1.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-pio.o: apis/drivers/avr/pio.c apis/drivers/avr/pio.h apis/drivers/avr/system.h
+pio.o: ../../drivers/avr/pio.c ../../drivers/avr/pio.h ../../drivers/avr/system.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-prescale.o: apis/drivers/avr/prescale.c apis/drivers/avr/prescale.h apis/drivers/avr/system.h
+prescale.o: ../../drivers/avr/prescale.c ../../drivers/avr/prescale.h ../../drivers/avr/system.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-system.o: apis/drivers/avr/system.c apis/drivers/avr/system.h
+system.o: ../../drivers/avr/system.c ../../drivers/avr/system.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-timer.o: apis/drivers/avr/timer.c apis/drivers/avr/system.h apis/drivers/avr/timer.h
+timer.o: ../../drivers/avr/timer.c ../../drivers/avr/system.h ../../drivers/avr/timer.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-timer0.o: apis/drivers/avr/timer0.c apis/drivers/avr/bits.h apis/drivers/avr/prescale.h apis/drivers/avr/system.h apis/drivers/avr/timer0.h
+timer0.o: ../../drivers/avr/timer0.c ../../drivers/avr/bits.h ../../drivers/avr/prescale.h ../../drivers/avr/system.h ../../drivers/avr/timer0.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-usart1.o: apis/drivers/avr/usart1.c apis/drivers/avr/system.h apis/drivers/avr/usart1.h
+usart1.o: ../../drivers/avr/usart1.c ../../drivers/avr/system.h ../../drivers/avr/usart1.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-display.o: apis/drivers/display.c apis/drivers/avr/system.h apis/drivers/display.h apis/drivers/ledmat.h
+display.o: ../../drivers/display.c ../../drivers/avr/system.h ../../drivers/display.h ../../drivers/ledmat.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-ledmat.o: apis/drivers/ledmat.c apis/drivers/avr/pio.h apis/drivers/avr/system.h apis/drivers/ledmat.h
+ledmat.o: ../../drivers/ledmat.c ../../drivers/avr/pio.h ../../drivers/avr/system.h ../../drivers/ledmat.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-navswitch.o: apis/drivers/navswitch.c apis/drivers/avr/delay.h apis/drivers/avr/pio.h apis/drivers/avr/system.h apis/drivers/navswitch.h
+navswitch.o: ../../drivers/navswitch.c ../../drivers/avr/delay.h ../../drivers/avr/pio.h ../../drivers/avr/system.h ../../drivers/navswitch.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-font.o: apis/utils/font.c apis/drivers/avr/system.h apis/utils/font.h
+font.o: ../../utils/font.c ../../drivers/avr/system.h ../../utils/font.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-pacer.o: apis/utils/pacer.c apis/drivers/avr/system.h apis/drivers/avr/timer.h apis/utils/pacer.h
+pacer.o: ../../utils/pacer.c ../../drivers/avr/system.h ../../drivers/avr/timer.h ../../utils/pacer.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-tinygl.o: apis/utils/tinygl.c apis/drivers/avr/system.h apis/drivers/display.h apis/utils/font.h apis/utils/tinygl.h
+tinygl.o: ../../utils/tinygl.c ../../drivers/avr/system.h ../../drivers/display.h ../../utils/font.h ../../utils/tinygl.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 # Link: create ELF output file from object files.
