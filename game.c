@@ -297,7 +297,7 @@ static void game_phase_p1 (void)
                     tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
                     // Display player number for 2 seconds
                     time = 0;
-                    while (time < (PACER_RATE * 2)) {
+                    while (time < (PACER_RATE * 3)) {
                         pacer_wait ();
                         tinygl_update ();
                         timer_task ();
@@ -308,7 +308,7 @@ static void game_phase_p1 (void)
                     tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
                     // Display player number for 2 seconds
                     time = 0;
-                    while (time < (PACER_RATE * 2)) {
+                    while (time < (PACER_RATE * 3)) {
                         pacer_wait ();
                         tinygl_update ();
                         timer_task ();
@@ -370,7 +370,7 @@ static void game_phase_p2 (void)
                 tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
                 // Display player number for 2 seconds
                 time = 0;
-                while (time < (PACER_RATE * 2)) {
+                while (time < (PACER_RATE * 3)) {
                     pacer_wait ();
                     tinygl_update ();
                     timer_task ();
@@ -382,7 +382,7 @@ static void game_phase_p2 (void)
                 tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
                 // Display player number for 2 seconds
                 time = 0;
-                while (time < (PACER_RATE * 2)) {
+                while (time < (PACER_RATE * 3)) {
                     pacer_wait ();
                     tinygl_update ();
                     timer_task ();
@@ -417,7 +417,7 @@ int main (void)
 
     // Display player number for 3 seconds
     time = 0;
-    while (time < (PACER_RATE * 3)) {
+    while (time < (PACER_RATE * 4)) {
         pacer_wait ();
         tinygl_update ();
         timer_task ();
