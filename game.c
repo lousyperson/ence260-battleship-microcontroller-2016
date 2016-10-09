@@ -10,7 +10,7 @@
 
 #define BUTTON_PIO PIO_DEFINE(PORT_D, 7)
 #define PACER_RATE 500
-#define MESSAGE_RATE 10
+#define MESSAGE_RATE 20
 
 // // Ship1 position
 // static tinygl_point_t ship1_left_index;
@@ -295,9 +295,9 @@ static void game_phase_p1 (void)
                 if (rcv_point == 0x1) {
                     ur_ship_count--;
                     tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
-                    // Display player number for 5 seconds
+                    // Display player number for 2 seconds
                     time = 0;
-                    while (time < (PACER_RATE * 5)) {
+                    while (time < (PACER_RATE * 2)) {
                         pacer_wait ();
                         tinygl_update ();
                         timer_task ();
@@ -306,9 +306,9 @@ static void game_phase_p1 (void)
                     break;
                 } else if (rcv_point == 0x2) {
                     tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
-                    // Display player number for 5 seconds
+                    // Display player number for 2 seconds
                     time = 0;
-                    while (time < (PACER_RATE * 5)) {
+                    while (time < (PACER_RATE * 2)) {
                         pacer_wait ();
                         tinygl_update ();
                         timer_task ();
@@ -325,9 +325,16 @@ static void game_phase_p2 (void)
 {
     led_set (LED1, 0);
     uint8_t current_column = 0;
+    map_view = 0;
+
     while (1) {
         pacer_wait ();
-        display_column (ship_map[current_column], current_column);
+
+        if (map_view == 0) {
+            display_column (ship_map[current_column], current_column);
+        } else {
+            display_column (hit_map[current_column], current_column);
+        }
 
         current_column++;
         previous_col = current_column - 1;
@@ -338,6 +345,12 @@ static void game_phase_p2 (void)
 
         if (current_column > (LEDMAT_COLS_NUM - 1)) {
             current_column = 0;
+        }
+
+        // Toggle map_view
+        if (button_pressed_p ())
+        {
+            map_view ^= 1;
         }
 
         if (ir_uart_read_ready_p ())
@@ -355,9 +368,9 @@ static void game_phase_p2 (void)
                 my_ship_count--;
                 ship_map[pos_x] &= 0;
                 tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
-                // Display player number for 5 seconds
+                // Display player number for 2 seconds
                 time = 0;
-                while (time < (PACER_RATE * 5)) {
+                while (time < (PACER_RATE * 2)) {
                     pacer_wait ();
                     tinygl_update ();
                     timer_task ();
@@ -367,9 +380,9 @@ static void game_phase_p2 (void)
             } else {
                 ir_uart_putc(0x2);
                 tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
-                // Display player number for 5 seconds
+                // Display player number for 2 seconds
                 time = 0;
-                while (time < (PACER_RATE * 5)) {
+                while (time < (PACER_RATE * 2)) {
                     pacer_wait ();
                     tinygl_update ();
                     timer_task ();
@@ -402,9 +415,9 @@ int main (void)
         tinygl_draw_message ("P2", tinygl_point(0,0), 2);
     }
 
-    // Display player number for 7 seconds
+    // Display player number for 3 seconds
     time = 0;
-    while (time < (PACER_RATE * 7)) {
+    while (time < (PACER_RATE * 3)) {
         pacer_wait ();
         tinygl_update ();
         timer_task ();
