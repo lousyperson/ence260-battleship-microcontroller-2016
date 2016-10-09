@@ -135,9 +135,9 @@ static void planning_phase (void) // solve whole row bug when 3 in a row
         current_column++;
         previous_col = current_column - 1;
 
-        if (previous_col < 0) {
-            previous_col = 4;
-        }
+        // if (previous_col < 0) {
+        //     previous_col = 4;
+        // }
 
         if (current_column > (LEDMAT_COLS_NUM - 1)) {
             current_column = 0;
@@ -193,9 +193,9 @@ static void preparation_phase (void)
         current_column++;
         previous_col = current_column - 1;
 
-        if (previous_col < 0) {
-            previous_col = 4;
-        }
+        // if (previous_col < 0) {
+        //     previous_col = 4;
+        // }
 
         if (current_column > (LEDMAT_COLS_NUM - 1)) {
             current_column = 0;
@@ -250,9 +250,9 @@ static void game_phase_p1 (void)
         current_column++;
         previous_col = current_column - 1;
 
-        if (previous_col < 0) {
-            previous_col = 4;
-        }
+        // if (previous_col < 0) {
+        //     previous_col = 4;
+        // }
 
         if (current_column > (LEDMAT_COLS_NUM - 1)) {
             current_column = 0;
@@ -339,9 +339,9 @@ static void game_phase_p2 (void)
         current_column++;
         previous_col = current_column - 1;
 
-        if (previous_col < 0) {
-            previous_col = 4;
-        }
+        // if (previous_col < 0) {
+        //     previous_col = 4;
+        // }
 
         if (current_column > (LEDMAT_COLS_NUM - 1)) {
             current_column = 0;
