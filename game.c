@@ -209,8 +209,8 @@ static void preparation_phase (void)
 
         if (navswitch_push_event_p (NAVSWITCH_PUSH))
         {
-            ir_uart_putc(0x1);
-            if (ir_uart_getc () == 0x2) {
+            ir_uart_putc(0x47);
+            if (ir_uart_getc () == 0x55) {
                 player = 1;
                 break;
             }
@@ -218,8 +218,8 @@ static void preparation_phase (void)
 
         if (ir_uart_read_ready_p ())
         {
-            if (ir_uart_getc () == 0x1) {
-                ir_uart_putc(0x2);
+            if (ir_uart_getc () == 0x47) {
+                ir_uart_putc(0x55);
                 player = 2;
                 break;
             }
@@ -239,6 +239,7 @@ static void game_phase_p1 (void)
     uint8_t current_column = 0;
     pos_x = 2;
     pos_y = 3;
+    navswitch_update();
 
     while (1) {
         pacer_wait ();
@@ -292,7 +293,7 @@ static void game_phase_p1 (void)
                 // HIT!
                 uint8_t rcv_point = 0b0;
                 rcv_point = ir_uart_getc ();
-                if (rcv_point == 0x1) {
+                if (rcv_point == 0x7B) {
                     ur_ship_count--;
                     tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
                     // Display player number for 2 seconds
@@ -304,7 +305,7 @@ static void game_phase_p1 (void)
                     }
                     player = 2;
                     break;
-                } else if (rcv_point == 0x2) {
+                } else if (rcv_point == 0x6A) {
                     tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
                     // Display player number for 2 seconds
                     time = 0;
@@ -355,7 +356,7 @@ static void game_phase_p2 (void)
 
         if (ir_uart_read_ready_p ())
         {
-            uint8_t received_point, temp_pos_y;
+            uint8_t received_point = 0, temp_pos_y;
             received_point = ir_uart_getc ();
             pos_x = (received_point & 0b111000) >> 3;
             temp_pos_y = received_point & 0b111;
@@ -364,7 +365,7 @@ static void game_phase_p2 (void)
                 pos_y = pos_y << 1;
             }
             if (ship_map[pos_x] & pos_y) {
-                ir_uart_putc(0x1);
+                ir_uart_putc(0x7B);
                 my_ship_count--;
                 ship_map[pos_x] &= 0;
                 tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
@@ -377,8 +378,8 @@ static void game_phase_p2 (void)
                 }
                 player = 1;
                 break;
-            } else {
-                ir_uart_putc(0x2);
+            } else if (!received_point) {
+                ir_uart_putc(0x6A);
                 tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
                 // Display player number for 2 seconds
                 time = 0;
