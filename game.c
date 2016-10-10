@@ -12,19 +12,6 @@
 #define PACER_RATE 500
 #define MESSAGE_RATE 20
 
-// // Ship1 position
-// static tinygl_point_t ship1_left_index;
-// static tinygl_point_t ship1_mid_index;
-// static tinygl_point_t ship1_right_index;
-// // Ship2 position
-// static tinygl_point_t ship2_left_index;
-// static tinygl_point_t ship2_mid_index;
-// static tinygl_point_t ship2_right_index;
-// // Ship3 position
-// static tinygl_point_t ship3_left_index;
-// static tinygl_point_t ship3_mid_index;
-// static tinygl_point_t ship3_right_index;
-// Number of ships
 static uint8_t no_ships = 0;
 
 static uint8_t pos_x = 2;
@@ -34,21 +21,6 @@ static uint8_t player = 0;
 static uint8_t map_view = 0;
 
 static uint16_t time;
-
-// static tinygl_point_t ships[] =
-// {
-//   ship1_left_index,
-//   ship1_mid_index,
-//   ship1_right_index,
-//
-//   ship2_left_index,
-//   ship2_mid_index,
-//   ship2_right_index,
-//
-//   ship3_left_index,
-//   ship3_mid_index,
-//   ship3_right_index
-// }
 
 static uint8_t my_ship_count = 3;
 static uint8_t ur_ship_count = 3;
