@@ -24,7 +24,6 @@ static uint16_t time;
 
 static uint8_t my_ship_count = 3;
 static uint8_t ur_ship_count = 3;
-// static uint8_t p = 1;
 
 static uint8_t ship_map[] =
 {
@@ -89,7 +88,7 @@ static uint8_t button_pressed_p (void)
     return pio_input_get(BUTTON_PIO);
 }
 
-static void planning_phase (void) // solve whole row bug when 3 in a row
+static void planning_phase (void)
 {
     cursor_map[2] = 0b11100;
     uint8_t current_column = 0;
@@ -106,10 +105,6 @@ static void planning_phase (void) // solve whole row bug when 3 in a row
 
         current_column++;
         previous_col = current_column - 1;
-
-        // if (previous_col < 0) {
-        //     previous_col = 4;
-        // }
 
         if (current_column > (LEDMAT_COLS_NUM - 1)) {
             current_column = 0;
@@ -165,10 +160,6 @@ static void preparation_phase (void)
         current_column++;
         previous_col = current_column - 1;
 
-        // if (previous_col < 0) {
-        //     previous_col = 4;
-        // }
-
         if (current_column > (LEDMAT_COLS_NUM - 1)) {
             current_column = 0;
         }
@@ -223,10 +214,6 @@ static void game_phase_p1 (void)
         current_column++;
         previous_col = current_column - 1;
 
-        // if (previous_col < 0) {
-        //     previous_col = 4;
-        // }
-
         if (current_column > (LEDMAT_COLS_NUM - 1)) {
             current_column = 0;
         }
@@ -257,14 +244,16 @@ static void game_phase_p1 (void)
 
         if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
             if (!(cursor_map[pos_x] & hit_map[pos_x])) {
-                hit_map[pos_x] |= cursor_map[pos_x];
                 uint8_t send_point = 0b0;
-                send_point |= (pos_x << 3);
-                send_point |= pos_y;
+                send_point |= (pos_x << 4);
+                send_point |= (pos_y << 1);
+                send_point |= 1;
                 ir_uart_putc(send_point);
                 // HIT!
                 uint8_t rcv_point = 0b0;
                 rcv_point = ir_uart_getc ();
+                hit_map[pos_x] |= cursor_map[pos_x];
+
                 if (rcv_point == 0x7B) {
                     ur_ship_count--;
                     tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
@@ -312,10 +301,6 @@ static void game_phase_p2 (void)
         current_column++;
         previous_col = current_column - 1;
 
-        // if (previous_col < 0) {
-        //     previous_col = 4;
-        // }
-
         if (current_column > (LEDMAT_COLS_NUM - 1)) {
             current_column = 0;
         }
@@ -330,38 +315,40 @@ static void game_phase_p2 (void)
         {
             uint8_t received_point = 0, temp_pos_y;
             received_point = ir_uart_getc ();
-            pos_x = (received_point & 0b111000) >> 3;
-            temp_pos_y = received_point & 0b111;
-            uint8_t i, pos_y = 1;
-            for (i = 0; i < temp_pos_y; i++) {
-                pos_y = pos_y << 1;
-            }
-            if (ship_map[pos_x] & pos_y) {
-                ir_uart_putc(0x7B);
-                my_ship_count--;
-                ship_map[pos_x] &= 0;
-                tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
-                // Display player number for 2 seconds
-                time = 0;
-                while (time < (PACER_RATE * 3)) {
-                    pacer_wait ();
-                    tinygl_update ();
-                    timer_task ();
+            if (received_point & 1) {
+                pos_x = (received_point & 0b111000) >> 4;
+                temp_pos_y = (received_point & 0b111) >> 1;
+                uint8_t i, pos_y = 1;
+                for (i = 0; i < temp_pos_y; i++) {
+                    pos_y = pos_y << 1;
                 }
-                player = 1;
-                break;
-            } else if (!received_point) {
-                ir_uart_putc(0x6A);
-                tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
-                // Display player number for 2 seconds
-                time = 0;
-                while (time < (PACER_RATE * 3)) {
-                    pacer_wait ();
-                    tinygl_update ();
-                    timer_task ();
+                if (ship_map[pos_x] & pos_y) {
+                    ir_uart_putc(0x7B);
+                    my_ship_count--;
+                    ship_map[pos_x] &= 0;
+                    tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
+                    // Display player number for 2 seconds
+                    time = 0;
+                    while (time < (PACER_RATE * 3)) {
+                        pacer_wait ();
+                        tinygl_update ();
+                        timer_task ();
+                    }
+                    player = 1;
+                    break;
+                } else if (!received_point) {
+                    ir_uart_putc(0x6A);
+                    tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
+                    // Display player number for 2 seconds
+                    time = 0;
+                    while (time < (PACER_RATE * 3)) {
+                        pacer_wait ();
+                        tinygl_update ();
+                        timer_task ();
+                    }
+                    player = 1;
+                    break;
                 }
-                player = 1;
-                break;
             }
         }
     }
