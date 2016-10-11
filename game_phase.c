@@ -12,7 +12,7 @@
 #include "planning.h"
 
 #define BUTTON_PIO PIO_DEFINE(PORT_D, 7)
-#define PACER_RATE 500
+#define PACER_RATE 300
 #define ATTACKING 1
 
 void game_p1 (void)
@@ -35,6 +35,8 @@ void game_p1 (void)
         pacer_wait ();
         display_column (hit_map[current_column], current_column);
         pacer_wait ();
+        display_column (empty_map[current_column], current_column);
+        pacer_wait ();
 
         update_column ();
 
@@ -54,6 +56,7 @@ void game_p1 (void)
                 ir_uart_putc(send_point);
                 // HIT!
                 uint8_t rcv_point = 0b0;
+
                 rcv_point = ir_uart_getc ();
 
                 if (rcv_point == 'H') {
@@ -109,20 +112,21 @@ void game_p2 (void)
             if (received_point & 1) {
                 pos_x = (received_point & 0b1110000) >> 4;
                 temp_pos_y = (received_point & 0b1110) >> 1;
-                uint8_t i, pos_y = 1;
+                uint8_t i;
+                pos_y = 1;
                 for (i = 0; i < temp_pos_y; i++) {
                     pos_y = pos_y << 1;
                 }
                 if (ship_map[pos_x] & pos_y) {
                     ir_uart_putc('H');
                     my_ship_count--;
-                    ship_map[pos_x] &= 0;
+                    ship_map[pos_x] &= 0; // repair both ships getting destroyed
                     tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
                     // Display HIT! for 3 seconds
                     display_3_seconds ();
                     player = 1;
                     break;
-                } else if ((pos_x + pos_y) < 13) {
+                } else if ((pos_x < 5) && (temp_pos_y < 7) {
                     ir_uart_putc('M');
                     tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
                     // Display MISS! for 3 seconds
