@@ -2,8 +2,7 @@
 #include "planning.h"
 #include "constants.h"
 #include "helper.h"
-#include "game_p1.h"
-#include "game_p2.h"
+#include "game_phase.h"
 
 void preparation_phase (void)
 {
@@ -50,4 +49,12 @@ void preparation_phase (void)
             }
         }
     }
+
+    if (player == 1) {
+        tinygl_draw_message ("P1", tinygl_point (0,0), 2);
+    } else if (player == 2) {
+        tinygl_draw_message ("P2", tinygl_point (0,0), 2);
+    }
+
+    display_4_seconds ();
 }

@@ -5,8 +5,7 @@
 #include "planning.h"
 #include "constants.h"
 #include "helper.h"
-#include "game_p1.h"
-#include "game_p2.h"
+#include "game_phase.h"
 #include "pio.h"
 
 uint8_t no_ships;

@@ -2,8 +2,7 @@
 #include "planning.h"
 #include "constants.h"
 #include "helper.h"
-#include "game_p1.h"
-#include "game_p2.h"
+#include "game_phase.h"
 
 // From stopwatch1
 void timer_task (void)
@@ -59,4 +58,42 @@ void move_cursor (void) {
 uint8_t button_pressed_p (void)
 {
     return pio_input_get(BUTTON_PIO);
+}
+
+void display_4_seconds (void)
+{
+    // Display player number for 4 seconds
+    time = 0;
+    while (time < (PACER_RATE * 4)) {
+        pacer_wait ();
+        tinygl_update ();
+        timer_task ();
+    }
+    tinygl_clear ();
+}
+
+void display_3_seconds (void)
+{
+    // Display player number for 3 seconds
+    time = 0;
+    while (time < (PACER_RATE * 3)) {
+        pacer_wait ();
+        tinygl_update ();
+        timer_task ();
+    }
+    tinygl_clear ();
+}
+
+void show_winner (void)
+{
+    if (my_ship_count == 0) {
+        tinygl_text ("LOSE...");
+    } else if (ur_ship_count == 0) {
+        tinygl_text ("WIN!!!");
+    }
+
+    while (1) {
+        pacer_wait ();
+        tinygl_update ();
+    }
 }

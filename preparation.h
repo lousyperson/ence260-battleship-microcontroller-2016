@@ -5,8 +5,7 @@
 #include "planning.h"
 #include "constants.h"
 #include "helper.h"
-#include "game_p1.h"
-#include "game_p2.h"
+#include "game_phase.h"
 
 void preparation_phase (void);
 

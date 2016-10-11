@@ -2,8 +2,7 @@
 #include "planning.h"
 #include "constants.h"
 #include "helper.h"
-#include "game_p1.h"
-#include "game_p2.h"
+#include "game_phase.h"
 #include "pio.h"
 
 uint8_t no_ships = 0;
@@ -14,7 +13,7 @@ uint8_t prev_pos_x = 0;
 uint8_t player = 0;
 uint8_t map_view = 0;
 
-uint16_t time;
+uint16_t time = 0;
 
 uint8_t my_ship_count = 3;
 uint8_t ur_ship_count = 3;
@@ -34,7 +33,7 @@ uint8_t hit_map[] =
     0x0, 0x0, 0x0, 0x0, 0x0
 };
 
-uint8_t previous_col;
+uint8_t previous_col = 4;
 
 /** Define PIO pins driving LED matrix rows.  */
 const pio_t rows[] =
