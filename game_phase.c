@@ -31,16 +31,12 @@ void game_p1 (void)
         pacer_wait ();
         navswitch_update();
         tinygl_clear ();
+        tinygl_update ();
         display_column (cursor_map[current_column], current_column);
         pacer_wait ();
         display_column (hit_map[current_column], current_column);
 
-        current_column++;
-        previous_col = current_column - 1;
-
-        if (current_column > (LEDMAT_COLS_NUM - 1)) {
-            current_column = 0;
-        }
+        update_column ();
 
         if (button_pressed_p ()) {
             player = 2;
@@ -83,7 +79,7 @@ void game_p1 (void)
 void game_p2 (void)
 {
     led_set (LED1, 0);
-    uint8_t current_column = 0;
+    current_column = 0;
     map_view = 0;
 
     while (1) {
@@ -95,12 +91,7 @@ void game_p2 (void)
             display_column (hit_map[current_column], current_column);
         }
 
-        current_column++;
-        previous_col = current_column - 1;
-
-        if (current_column > (LEDMAT_COLS_NUM - 1)) {
-            current_column = 0;
-        }
+        update_column ();
 
         // Toggle map_view
         if (button_pressed_p ())

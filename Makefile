@@ -14,8 +14,11 @@ DEL = rm
 all: game.out
 
 # Compile: create object files from C source files.
-game.o: game.c ../../drivers/avr/ir_uart.h ../../drivers/avr/system.h ../../drivers/display.h ../../drivers/navswitch.h ../../fonts/font5x7_1.h ../../utils/font.h ../../utils/tinygl.h ../../drivers/avr/pio.h ../../utils/pacer.h ../../drivers/led.h ../../utils/task.h game_phase.h helper.h planning.h preparation.h constants.h
+game.o: game.c init.h preparation.h planning.h constants.h helper.h game_phase.h
 	$(CC) -c $(CFLAGS) $< -o $@
+
+# game.o: game.c ../../drivers/avr/ir_uart.h ../../drivers/avr/system.h ../../drivers/display.h ../../drivers/navswitch.h ../../fonts/font5x7_1.h ../../utils/font.h ../../utils/tinygl.h ../../drivers/avr/pio.h ../../utils/pacer.h ../../drivers/led.h ../../utils/task.h game_phase.h helper.h planning.h preparation.h constants.h
+# 	$(CC) -c $(CFLAGS) $< -o $@
 
 ir_uart.o: ../../drivers/avr/ir_uart.c ../../drivers/avr/ir_uart.h ../../drivers/avr/pio.h ../../drivers/avr/system.h ../../drivers/avr/timer0.h ../../drivers/avr/usart1.h
 	$(CC) -c $(CFLAGS) $< -o $@
@@ -77,9 +80,12 @@ preparation.o: preparation.c preparation.h game_phase.h helper.h planning.h cons
 constants.o: constants.c constants.h game_phase.h helper.h planning.h preparation.h ../../drivers/avr/pio.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
+init.o: init.c init.h ../../drivers/avr/system.h ../../drivers/navswitch.h ../../utils/pacer.h ../../drivers/avr/ir_uart.h ../../utils/tinygl.h ../../fonts/font5x7_1.h
+	$(CC) -c $(CFLAGS) $< -o $@
+
 
 # Link: create ELF output file from object files.
-game.out: game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o tinygl.o pacer.o led.o task.o game_phase.o helper.o planning.o preparation.o constants.o
+game.out: game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o tinygl.o pacer.o led.o task.o game_phase.o helper.o planning.o preparation.o constants.o init.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

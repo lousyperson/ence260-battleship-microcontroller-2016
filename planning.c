@@ -1,5 +1,3 @@
-#include "preparation.h"
-#include "planning.h"
 #include "constants.h"
 #include "helper.h"
 #include "game_phase.h"
@@ -10,6 +8,7 @@ void planning_phase (void)
     uint8_t current_column = 0;
     pos_x = 2;
     pos_y = 3;
+
     while (1 && no_ships < 3)
     {
         pacer_wait ();

@@ -1,5 +1,3 @@
-#include "preparation.h"
-#include "planning.h"
 #include "constants.h"
 #include "helper.h"
 #include "game_phase.h"
@@ -8,22 +6,19 @@ void preparation_phase (void)
 {
     uint8_t current_column = 0;
     led_set (LED1, 1);
+
     while (1) {
         pacer_wait ();
         navswitch_update();
-
+        display_column (empty_map[current_column], current_column);
+        pacer_wait ();
         if (map_view == 0) {
             display_column (ship_map[current_column], current_column);
         } else {
             display_column (hit_map[current_column], current_column);
         }
 
-        current_column++;
-        previous_col = current_column - 1;
-
-        if (current_column > (LEDMAT_COLS_NUM - 1)) {
-            current_column = 0;
-        }
+        update_column ();
 
         // Toggle map_view
         if (button_pressed_p ())

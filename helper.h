@@ -1,10 +1,7 @@
 #ifndef HELPER_H
 #define HELPER_H
 
-#include "preparation.h"
-#include "planning.h"
 #include "constants.h"
-#include "helper.h"
 #include "game_phase.h"
 
 void timer_task (void);
@@ -20,5 +17,7 @@ void display_4_seconds (void);
 void display_3_seconds (void);
 
 void show_winner (void);
+
+void update_column (void);
 
 #endif

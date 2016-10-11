@@ -1,7 +1,4 @@
-#include "preparation.h"
-#include "planning.h"
 #include "constants.h"
-#include "helper.h"
 #include "game_phase.h"
 
 // From stopwatch1
@@ -95,5 +92,21 @@ void show_winner (void)
     while (1) {
         pacer_wait ();
         tinygl_update ();
+    }
+}
+
+void update_column (void)
+{
+    current_column++;
+    // previous_col = current_column - 1;
+
+    if (previous_col == 0) {
+        previous_col = 4;
+    } else {
+        previous_col = current_column - 1;
+    }
+
+    if (current_column > (LEDMAT_COLS_NUM - 1)) {
+        current_column = 0;
     }
 }
