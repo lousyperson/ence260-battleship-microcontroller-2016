@@ -34,6 +34,7 @@ void game_p1 (void)
         display_column (cursor_map[current_column], current_column);
         pacer_wait ();
         display_column (hit_map[current_column], current_column);
+        pacer_wait ();
 
         update_column ();
 
