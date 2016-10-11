@@ -18,4 +18,6 @@ void show_winner (void);
 
 void update_column (void);
 
+void sink_ship (uint8_t temp_pos_y);
+
 #endif

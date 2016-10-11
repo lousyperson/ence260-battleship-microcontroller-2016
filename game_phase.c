@@ -12,9 +12,12 @@
 #include "planning.h"
 
 #define BUTTON_PIO PIO_DEFINE(PORT_D, 7)
-#define PACER_RATE 300
+#define PACER_RATE 500
+
+/**Used in move_cursor to define border for cursor*/
 #define ATTACKING 1
 
+/**Attacking phase*/
 void game_p1 (void)
 {
     led_set (LED1, 1);
@@ -80,6 +83,7 @@ void game_p1 (void)
     }
 }
 
+/**Defending phase*/
 void game_p2 (void)
 {
     led_set (LED1, 0);
@@ -120,13 +124,13 @@ void game_p2 (void)
                 if (ship_map[pos_x] & pos_y) {
                     ir_uart_putc('H');
                     my_ship_count--;
-                    ship_map[pos_x] &= 0; // repair both ships getting destroyed
+                    sink_ship (temp_pos_y); // repair both ships getting destroyed
                     tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
                     // Display HIT! for 3 seconds
                     display_3_seconds ();
                     player = 1;
                     break;
-                } else if ((pos_x < 5) && (temp_pos_y < 7) {
+                } else if ((pos_x < 5) && (temp_pos_y < 7)) {
                     ir_uart_putc('M');
                     tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
                     // Display MISS! for 3 seconds
@@ -139,6 +143,7 @@ void game_p2 (void)
     }
 }
 
+/**Main game function to alternate turns until one of the players ship count = 0*/
 void game_phase (void)
 {
     while (1 && my_ship_count > 0 && ur_ship_count > 0) {

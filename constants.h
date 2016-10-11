@@ -12,7 +12,6 @@ uint8_t map_view;
 uint16_t time;
 uint8_t my_ship_count;
 uint8_t ur_ship_count;
-uint8_t previous_col;
 uint8_t current_column;
 uint8_t ship_map[5];
 uint8_t cursor_map[5];

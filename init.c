@@ -8,6 +8,7 @@
 #define PACER_RATE 1000
 #define MESSAGE_RATE 20
 
+/**Function to initialise modules*/
 void game_init(void)
 {
     system_init ();

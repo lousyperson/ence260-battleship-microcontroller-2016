@@ -5,6 +5,7 @@
 #include "planning.h"
 #include "game_phase.h"
 
+/** Main Program */
 int main (void)
 {
     game_init();
