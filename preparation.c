@@ -6,7 +6,6 @@
 void preparation_phase (void)
 {
     current_column = 0;
-    previous_col = 4;
     led_set (LED1, 1);
 
     while (1) {

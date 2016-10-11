@@ -104,36 +104,40 @@ void update_column (void)
     }
 }
 
+/**Function to turn off lights for ship hit*/
 void sink_ship (uint8_t temp_pos_y)
 {
     int i, count = 0;
     uint8_t found_zero = 0b0;
-    if (i = 0; i < 7; i++) {
+    for (i = 0; i < 7; i++) {
         if ((ship_map[pos_x] >> i) & 1) {
             count++;
         } else {
             found_zero |= (1 << i);
         }
     }
+
     if (count > 3) {
         if (found_zero == 0b1000) {
-            if ((temp_pos_y >= 0) && (temp_pos_y <= 2) {
+            if ((temp_pos_y >= 0) && (temp_pos_y <= 2)) {
                 ship_map[pos_x] ^= 0b111;
-            } else if ((temp_pos_y >= 4) && (temp_pos_y <= 6) {
+            } else if ((temp_pos_y >= 4) && (temp_pos_y <= 6)) {
                 ship_map[pos_x] ^= 0b1110000;
             }
         } else if (found_zero == 0b1) {
-            if ((temp_pos_y >= 1) && (temp_pos_y <= 3) {
+            if ((temp_pos_y >= 1) && (temp_pos_y <= 3)) {
                 ship_map[pos_x] ^= 0b1110;
-            } else if ((temp_pos_y >= 4) && (temp_pos_y <= 6) {
+            } else if ((temp_pos_y >= 4) && (temp_pos_y <= 6)) {
                 ship_map[pos_x] ^= 0b1110000;
             }
         } else if (found_zero == 0b1000000) {
-            if ((temp_pos_y >= 0) && (temp_pos_y <= 2) {
+            if ((temp_pos_y >= 0) && (temp_pos_y <= 2)) {
                 ship_map[pos_x] ^= 0b111;
-            } else if ((temp_pos_y >= 3) && (temp_pos_y <= 5) {
+            } else if ((temp_pos_y >= 3) && (temp_pos_y <= 5)) {
                 ship_map[pos_x] ^= 0b111000;
             }
         }
+    } else {
+        ship_map[pos_x] &= 0;
     }
 }
