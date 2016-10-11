@@ -104,8 +104,8 @@ void game_p2 (void)
             uint8_t received_point = 0, temp_pos_y;
             received_point = ir_uart_getc ();
             if (received_point & 1) {
-                pos_x = (received_point & 0b111000) >> 4;
-                temp_pos_y = (received_point & 0b111) >> 1;
+                pos_x = (received_point & 0b1110000) >> 4;
+                temp_pos_y = (received_point & 0b1110) >> 1;
                 uint8_t i, pos_y = 1;
                 for (i = 0; i < temp_pos_y; i++) {
                     pos_y = pos_y << 1;

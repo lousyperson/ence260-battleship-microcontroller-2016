@@ -1,31 +1,27 @@
 #include "constants.h"
 #include "game_phase.h"
 
-// From stopwatch1
-void timer_task (void)
-{
-    time++;
-}
-
 void display_column (uint8_t row_pattern, uint8_t current_column)
 {
-    pio_output_high (cols[previous_col]);
+    int i;
+    for (i = 0; i < 5; i++) {
+        pio_output_high (cols[i]);
+    }
     pio_output_low (cols[current_column]);
 
     uint8_t current_row;
     for (current_row = 0; current_row < 7; current_row++) {
-		if ((row_pattern >> current_row) & 1)
-		{
+		if ((row_pattern >> current_row) & 1) {
 			pio_output_low (rows[current_row]);
 		}
-		else
-		{
+		else {
 			pio_output_high (rows[current_row]);
 		}
 	}
 }
 
-void move_cursor (void) {
+void move_cursor (void)
+{
     if (navswitch_push_event_p (NAVSWITCH_NORTH) && pos_y > 1) {
         cursor_map[pos_x] = cursor_map[pos_x] >> 1;
         pos_y--;
@@ -64,7 +60,7 @@ void display_4_seconds (void)
     while (time < (PACER_RATE * 4)) {
         pacer_wait ();
         tinygl_update ();
-        timer_task ();
+        time++;
     }
     tinygl_clear ();
 }
@@ -76,7 +72,7 @@ void display_3_seconds (void)
     while (time < (PACER_RATE * 3)) {
         pacer_wait ();
         tinygl_update ();
-        timer_task ();
+        time++;
     }
     tinygl_clear ();
 }

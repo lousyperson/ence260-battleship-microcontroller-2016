@@ -4,19 +4,21 @@
 
 void preparation_phase (void)
 {
-    uint8_t current_column = 0;
+    current_column = 0;
+    previous_col = 4;
     led_set (LED1, 1);
 
     while (1) {
         pacer_wait ();
         navswitch_update();
-        display_column (empty_map[current_column], current_column);
-        pacer_wait ();
+
         if (map_view == 0) {
             display_column (ship_map[current_column], current_column);
         } else {
             display_column (hit_map[current_column], current_column);
         }
+        pacer_wait ();
+        display_column (empty_map[current_column], current_column);
 
         update_column ();
 

@@ -4,8 +4,6 @@
 #include "constants.h"
 #include "game_phase.h"
 
-void timer_task (void);
-
 void display_column (uint8_t row_pattern, uint8_t current_column);
 
 void move_cursor (void);

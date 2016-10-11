@@ -9,10 +9,12 @@ int main (void)
 {
     game_init();
 
-    planning_phase ();
-    preparation_phase ();
-    game_phase ();
-    show_winner ();
+    while (1) {
+        planning_phase ();
+        preparation_phase ();
+        game_phase ();
+        show_winner ();
+    }
 
     return 0;
 }
