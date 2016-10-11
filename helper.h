@@ -6,7 +6,7 @@
 
 void display_column (uint8_t row_pattern, uint8_t current_column);
 
-void move_cursor (void);
+void move_cursor (uint8_t mode);
 
 uint8_t button_pressed_p (void);
 

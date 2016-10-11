@@ -16,6 +16,7 @@
 
 #define BUTTON_PIO PIO_DEFINE(PORT_D, 7)
 #define PACER_RATE 500
+#define ATTACKING 1
 
 void game_p1 (void);
 

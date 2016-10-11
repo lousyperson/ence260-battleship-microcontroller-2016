@@ -13,6 +13,7 @@
 
 #define BUTTON_PIO PIO_DEFINE(PORT_D, 7)
 #define PACER_RATE 500
+#define ATTACKING 1
 
 void game_p1 (void)
 {
@@ -23,15 +24,13 @@ void game_p1 (void)
     cursor_map[3] = 0b0;
     cursor_map[4] = 0b0;
 
-    uint8_t current_column = 0;
+    current_column = 0;
     pos_x = 2;
     pos_y = 3;
 
     while (1) {
         pacer_wait ();
         navswitch_update();
-        tinygl_clear ();
-        tinygl_update ();
         display_column (cursor_map[current_column], current_column);
         pacer_wait ();
         display_column (hit_map[current_column], current_column);
@@ -43,7 +42,7 @@ void game_p1 (void)
             break;
         }
 
-        move_cursor();
+        move_cursor(ATTACKING);
 
         if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
             if (!(cursor_map[pos_x] & hit_map[pos_x])) {
@@ -55,7 +54,6 @@ void game_p1 (void)
                 // HIT!
                 uint8_t rcv_point = 0b0;
                 rcv_point = ir_uart_getc ();
-                hit_map[pos_x] |= cursor_map[pos_x];
 
                 if (rcv_point == 'H') {
                     ur_ship_count--;
@@ -63,12 +61,14 @@ void game_p1 (void)
                     // Display HIT! for 2 seconds
                     display_3_seconds ();
                     player = 2;
+                    hit_map[pos_x] |= cursor_map[pos_x];
                     break;
                 } else if (rcv_point == 'M') {
                     tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
                     // Display MISS! for 2 seconds
                     display_3_seconds ();
                     player = 2;
+                    hit_map[pos_x] |= cursor_map[pos_x];
                     break;
                 }
             }
@@ -90,6 +90,8 @@ void game_p2 (void)
         } else {
             display_column (hit_map[current_column], current_column);
         }
+        pacer_wait ();
+        display_column (empty_map[current_column], current_column);
 
         update_column ();
 
@@ -119,7 +121,7 @@ void game_p2 (void)
                     display_3_seconds ();
                     player = 1;
                     break;
-                } else {
+                } else if ((pos_x + pos_y) < 13) {
                     ir_uart_putc('M');
                     tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
                     // Display MISS! for 3 seconds

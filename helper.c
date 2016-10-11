@@ -20,14 +20,14 @@ void display_column (uint8_t row_pattern, uint8_t current_column)
 	}
 }
 
-void move_cursor (void)
+void move_cursor (uint8_t mode)
 {
-    if (navswitch_push_event_p (NAVSWITCH_NORTH) && pos_y > 1) {
+    if (navswitch_push_event_p (NAVSWITCH_NORTH) && pos_y > (1 - mode)) {
         cursor_map[pos_x] = cursor_map[pos_x] >> 1;
         pos_y--;
     }
 
-    if (navswitch_push_event_p (NAVSWITCH_SOUTH) && pos_y < 5) {
+    if (navswitch_push_event_p (NAVSWITCH_SOUTH) && pos_y < (5 + mode)) {
         cursor_map[pos_x] = cursor_map[pos_x] << 1;
         pos_y++;
     }
