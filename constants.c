@@ -1,5 +1,6 @@
 #include "pio.h"
 
+/**Blink rate for cursor*/
 #define BLINK_RATE 200
 
 uint8_t no_ships = 0;
@@ -34,7 +35,9 @@ uint8_t empty_map[] =
     0x0, 0x0, 0x0, 0x0, 0x0
 };
 
-/** Define PIO pins driving LED matrix rows.  */
+/** Define PIO pins driving LED matrix rows.
+*   from lab2-ex5
+*/
 const pio_t rows[] =
 {
     LEDMAT_ROW1_PIO, LEDMAT_ROW2_PIO, LEDMAT_ROW3_PIO,
@@ -43,7 +46,9 @@ const pio_t rows[] =
 };
 
 
-/** Define PIO pins driving LED matrix columns.  */
+/** Define PIO pins driving LED matrix columns.
+*   from lab2-ex5
+*/
 const pio_t cols[] =
 {
     LEDMAT_COL1_PIO, LEDMAT_COL2_PIO, LEDMAT_COL3_PIO,
