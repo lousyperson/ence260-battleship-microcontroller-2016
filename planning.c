@@ -15,12 +15,13 @@ void planning_phase (void)
 
     while (1 && no_ships < 3)
     {
-        pacer_wait ();
         navswitch_update ();
-        tinygl_update ();
         display_column (cursor_map[current_column], current_column);
         pacer_wait ();
         display_column (ship_map[current_column], current_column);
+        pacer_wait ();
+        display_column (empty_map[current_column], current_column);
+        pacer_wait ();
 
         update_column ();
 

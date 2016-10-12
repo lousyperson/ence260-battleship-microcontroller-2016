@@ -17,6 +17,7 @@ int main (void)
         navswitch_update();
 
         if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+            tinygl_clear ();
             break;
         }
     }
