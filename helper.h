@@ -20,4 +20,16 @@ void update_column (void);
 
 void sink_ship (uint8_t temp_pos_y);
 
+void display_blinking_cursor (void);
+
+void display_ship_map (void);
+
+void display_hit_map (void);
+
+void display_empty_map (void);
+
+void display_hit (void);
+
+void display_miss (void);
+
 #endif

@@ -8,7 +8,7 @@
 #include "tinygl.h"
 #include "../fonts/font5x7_1.h"
 
-#define PACER_RATE 500
+#define PACER_RATE 1000
 #define MESSAGE_RATE 20
 
 void game_init(void);

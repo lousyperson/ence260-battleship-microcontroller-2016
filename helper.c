@@ -1,5 +1,6 @@
 #include "constants.h"
 #include "game_phase.h"
+#include "init.h"
 
 /**Used to display bitmap*/
 void display_column (uint8_t row_pattern, uint8_t current_column)
@@ -104,7 +105,7 @@ void update_column (void)
     }
 }
 
-/**Function to turn off lights for ship hit*/
+/**Function to turn off led for ship hit*/
 void sink_ship (uint8_t temp_pos_y)
 {
     int i, count = 0;
@@ -119,7 +120,7 @@ void sink_ship (uint8_t temp_pos_y)
 
     if (count > 3) {
         if (found_zero == 0b1000) {
-            if ((temp_pos_y >= 0) && (temp_pos_y <= 2)) {
+            if (temp_pos_y <= 2) {
                 ship_map[pos_x] ^= 0b111;
             } else if ((temp_pos_y >= 4) && (temp_pos_y <= 6)) {
                 ship_map[pos_x] ^= 0b1110000;
@@ -131,7 +132,7 @@ void sink_ship (uint8_t temp_pos_y)
                 ship_map[pos_x] ^= 0b1110000;
             }
         } else if (found_zero == 0b1000000) {
-            if ((temp_pos_y >= 0) && (temp_pos_y <= 2)) {
+            if (temp_pos_y <= 2) {
                 ship_map[pos_x] ^= 0b111;
             } else if ((temp_pos_y >= 3) && (temp_pos_y <= 5)) {
                 ship_map[pos_x] ^= 0b111000;
@@ -140,4 +141,49 @@ void sink_ship (uint8_t temp_pos_y)
     } else {
         ship_map[pos_x] &= 0;
     }
+}
+
+/**Function to display cursor with blinking effect*/
+void display_blinking_cursor (void)
+{
+    if (cursor_timer_count < (BLINK_RATE / 2)) {
+        display_column (cursor_map[current_column], current_column);
+        pacer_wait ();
+    }
+    cursor_timer_count = (cursor_timer_count + 1) % (BLINK_RATE);
+}
+
+/**Function to display ship map*/
+void display_ship_map (void)
+{
+    display_column (ship_map[current_column], current_column);
+    pacer_wait ();
+}
+
+/**Function to display hit map*/
+void display_hit_map (void)
+{
+    display_column (hit_map[current_column], current_column);
+    pacer_wait ();
+}
+
+/**Function to display empty map*/
+void display_empty_map (void)
+{
+    display_column (empty_map[current_column], current_column);
+    pacer_wait ();
+}
+
+/**Function to display "HIT!" for 3 seconds*/
+void display_hit (void)
+{
+    tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
+    display_3_seconds ();
+}
+
+/**Function to display "MISS!" for 3 seconds*/
+void display_miss (void)
+{
+    tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
+    display_3_seconds ();
 }

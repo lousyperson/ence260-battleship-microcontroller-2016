@@ -3,6 +3,8 @@
 
 #include "pio.h"
 
+#define BLINK_RATE 100
+
 uint8_t no_ships;
 uint8_t pos_x;
 uint8_t pos_y;
@@ -13,6 +15,7 @@ uint16_t time;
 uint8_t my_ship_count;
 uint8_t ur_ship_count;
 uint8_t current_column;
+uint16_t cursor_timer_count;
 uint8_t ship_map[5];
 uint8_t cursor_map[5];
 uint8_t hit_map[5];

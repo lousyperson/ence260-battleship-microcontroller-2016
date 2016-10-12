@@ -13,12 +13,11 @@ void preparation_phase (void)
         navswitch_update();
 
         if (map_view == 0) {
-            display_column (ship_map[current_column], current_column);
+            display_ship_map ();
         } else {
-            display_column (hit_map[current_column], current_column);
+            display_hit_map ();
         }
-        pacer_wait ();
-        display_column (empty_map[current_column], current_column);
+        display_empty_map ();
 
         update_column ();
 

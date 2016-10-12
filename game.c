@@ -14,7 +14,7 @@ int main (void)
     while (1) {
         pacer_wait ();
         tinygl_update ();
-        navswitch_update();
+        navswitch_update ();
 
         if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
             tinygl_clear ();

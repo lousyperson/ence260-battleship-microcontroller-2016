@@ -13,15 +13,15 @@ void planning_phase (void)
     pos_x = 2;
     pos_y = 3;
 
+    cursor_timer_count = 0;
+
     while (1 && no_ships < 3)
     {
         navswitch_update ();
-        display_column (cursor_map[current_column], current_column);
-        pacer_wait ();
-        display_column (ship_map[current_column], current_column);
-        pacer_wait ();
-        display_column (empty_map[current_column], current_column);
-        pacer_wait ();
+
+        display_blinking_cursor ();
+        display_ship_map ();
+        display_empty_map ();
 
         update_column ();
 

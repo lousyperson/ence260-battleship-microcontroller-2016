@@ -8,11 +8,7 @@
 #include "ir_uart.h"
 #include "helper.h"
 
-#include "preparation.h"
-#include "planning.h"
-
 #define BUTTON_PIO PIO_DEFINE(PORT_D, 7)
-#define PACER_RATE 500
 
 /**Used in move_cursor to define border for cursor*/
 #define ATTACKING 1
@@ -31,18 +27,17 @@ void game_p1 (void)
     pos_x = 2;
     pos_y = 3;
 
+    cursor_timer_count = 0;
+
     while (1) {
-        pacer_wait ();
         navswitch_update();
-        display_column (cursor_map[current_column], current_column);
-        pacer_wait ();
-        display_column (hit_map[current_column], current_column);
-        pacer_wait ();
-        display_column (empty_map[current_column], current_column);
-        pacer_wait ();
+        display_blinking_cursor ();
+        display_hit_map ();
+        display_empty_map ();
 
         update_column ();
 
+        // Skip turn if button (S1) is pressed
         if (button_pressed_p ()) {
             player = 2;
             break;
@@ -55,25 +50,21 @@ void game_p1 (void)
                 uint8_t send_point = 0b0;
                 send_point |= (pos_x << 4);
                 send_point |= (pos_y << 1);
-                send_point |= 1;
+                send_point |= 1;  // Used for error checking or reduce random signal picked up
                 ir_uart_putc(send_point);
-                // HIT!
+
                 uint8_t rcv_point = 0b0;
 
                 rcv_point = ir_uart_getc ();
 
                 if (rcv_point == 'H') {
                     ur_ship_count--;
-                    tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
-                    // Display HIT! for 2 seconds
-                    display_3_seconds ();
+                    display_hit ();  // Displays "HIT!" for 3 seconds
                     player = 2;
                     hit_map[pos_x] |= cursor_map[pos_x];
                     break;
                 } else if (rcv_point == 'M') {
-                    tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
-                    // Display MISS! for 2 seconds
-                    display_3_seconds ();
+                    display_miss ();  // Displays "MISS!" for 3 seconds
                     player = 2;
                     hit_map[pos_x] |= cursor_map[pos_x];
                     break;
@@ -91,15 +82,12 @@ void game_p2 (void)
     map_view = 0;
 
     while (1) {
-        pacer_wait ();
-
         if (map_view == 0) {
-            display_column (ship_map[current_column], current_column);
+            display_ship_map ();
         } else {
-            display_column (hit_map[current_column], current_column);
+            display_hit_map ();
         }
-        pacer_wait ();
-        display_column (empty_map[current_column], current_column);
+        display_empty_map ();
 
         update_column ();
 
@@ -124,17 +112,13 @@ void game_p2 (void)
                 if (ship_map[pos_x] & pos_y) {
                     ir_uart_putc('H');
                     my_ship_count--;
-                    sink_ship (temp_pos_y); // repair both ships getting destroyed
-                    tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
-                    // Display HIT! for 3 seconds
-                    display_3_seconds ();
+                    sink_ship (temp_pos_y);  // Turn off led for ship hit
+                    display_hit ();  // Displays "HIT!" for 3 seconds
                     player = 1;
                     break;
                 } else if ((pos_x < 5) && (temp_pos_y < 7)) {
                     ir_uart_putc('M');
-                    tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
-                    // Display MISS! for 3 seconds
-                    display_3_seconds ();
+                    display_miss ();  // Displays "MISS!" for 3 seconds
                     player = 1;
                     break;
                 }

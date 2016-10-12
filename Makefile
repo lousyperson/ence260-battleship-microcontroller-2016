@@ -68,7 +68,7 @@ task.o: ../../utils/task.c ../../drivers/avr/system.h ../../drivers/avr/timer.h 
 game_phase.o: game_phase.c game_phase.h ../../drivers/led.h constants.h ../../drivers/avr/system.h ../../utils/pacer.h ../../drivers/navswitch.h ../../utils/tinygl.h ../../drivers/avr/pio.h ../../drivers/avr/ir_uart.h helper.h  planning.h preparation.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-helper.o: helper.c helper.h game_phase.h planning.h preparation.h constants.h
+helper.o: helper.c helper.h game_phase.h planning.h preparation.h constants.h init.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 planning.o: planning.c planning.h game_phase.h helper.h preparation.h constants.h
