@@ -10,6 +10,17 @@ int main (void)
 {
     game_init();
 
+    tinygl_text ("Welcome to BATTLESHIP");
+    while (1) {
+        pacer_wait ();
+        tinygl_update ();
+        navswitch_update();
+
+        if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+            break;
+        }
+    }
+
     planning_phase ();
     preparation_phase ();
     game_phase ();
