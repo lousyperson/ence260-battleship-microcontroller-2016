@@ -1,6 +1,6 @@
 #include "pio.h"
 
-#define BLINK_RATE 100
+#define BLINK_RATE 200
 
 uint8_t no_ships = 0;
 uint8_t pos_x = 2;
@@ -12,7 +12,7 @@ uint16_t time = 0;
 uint8_t my_ship_count = 3;
 uint8_t ur_ship_count = 3;
 uint8_t current_column = 0;
-uint16_t cursor_timer_count = 0;
+uint16_t blink_timer_count = 0;
 
 uint8_t ship_map[] =
 {

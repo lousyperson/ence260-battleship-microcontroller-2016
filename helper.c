@@ -2,6 +2,9 @@
 #include "game_phase.h"
 #include "init.h"
 
+#define BLINK 1
+#define OFF 0
+
 /**Used to display bitmap*/
 void display_column (uint8_t row_pattern, uint8_t current_column)
 {
@@ -69,14 +72,18 @@ void display_4_seconds (void)
 }
 
 /**Displays tinygl text for 3 seconds*/
-void display_3_seconds (void)
+void display_3_seconds (uint8_t LED_MODE)
 {
     time = 0;
     while (time < (PACER_RATE * 3)) {
-        pacer_wait ();
+        if (LED_MODE) {
+            blink_led ();
+        }
         tinygl_update ();
+        pacer_wait ();
         time++;
     }
+    led_set (LED1, 0);  // Make sure led is off after blinking
     tinygl_clear ();
 }
 
@@ -146,11 +153,11 @@ void sink_ship (uint8_t temp_pos_y)
 /**Function to display cursor with blinking effect*/
 void display_blinking_cursor (void)
 {
-    if (cursor_timer_count < (BLINK_RATE / 2)) {
+    if (blink_timer_count < (BLINK_RATE / 2)) {
         display_column (cursor_map[current_column], current_column);
         pacer_wait ();
     }
-    cursor_timer_count = (cursor_timer_count + 1) % (BLINK_RATE);
+    blink_timer_count = (blink_timer_count + 1) % (BLINK_RATE);
 }
 
 /**Function to display ship map*/
@@ -178,12 +185,24 @@ void display_empty_map (void)
 void display_hit (void)
 {
     tinygl_draw_message ("HIT!", tinygl_point(0,0), 1);
-    display_3_seconds ();
+    blink_timer_count = 0;
+    display_3_seconds (BLINK);
 }
 
 /**Function to display "MISS!" for 3 seconds*/
 void display_miss (void)
 {
     tinygl_draw_message ("MISS!", tinygl_point(0,0), 1);
-    display_3_seconds ();
+    display_3_seconds (OFF);
+}
+
+/**Function to blink led1*/
+void blink_led (void)
+{
+    if (blink_timer_count < (BLINK_RATE / 2)) {
+        led_set (LED1, 1);
+    } else {
+        led_set (LED1, 0);
+    }
+    blink_timer_count = (blink_timer_count + 1) % (BLINK_RATE);
 }

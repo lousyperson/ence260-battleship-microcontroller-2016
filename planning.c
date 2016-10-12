@@ -13,7 +13,7 @@ void planning_phase (void)
     pos_x = 2;
     pos_y = 3;
 
-    cursor_timer_count = 0;
+    blink_timer_count = 0;
 
     while (1 && no_ships < 3)
     {
