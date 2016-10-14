@@ -1,3 +1,9 @@
+/**
+* Battleship program
+* by Zhi You Tan and Sebastian Powell
+* zyt10 and smp123
+*/
+
 #include "init.h"
 #include "constants.h"
 #include "helper.h"
